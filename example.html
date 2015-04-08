@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Slider Example</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    <style>[touch-action="none"]{ -ms-touch-action: none; touch-action: none; }[touch-action="pan-x"]{ -ms-touch-action: pan-x; touch-action: pan-x; }[touch-action="pan-y"]{ -ms-touch-action: pan-y; touch-action: pan-y; }[touch-action="scroll"],[touch-action="pan-x pan-y"],[touch-action="pan-y pan-x"]{ -ms-touch-action: pan-x pan-y; touch-action: pan-x pan-y; }</style>
+    <style>
+    /* main */
+    .main{
+      float: left;
+      width: 60%;
+    }
+    .slider{
+      position: relative;
+      margin-top: 12px;
+    }
+    .slider-bar-bg{
+      height: 8px;
+      border-radius: 4px;
+      background-color: #e6e6e6;
+    }
+    .slider-bar{
+      position: absolute;
+      top: 0;
+      width: 0;
+      height: 8px;
+      border-radius: 4px;
+    }
+    .slider-bar.high{
+      background-color: #f42b2b;
+    }
+    .slider-bar.middle{
+      background-color: #f9c320;
+    }
+    .slider-bar.low{
+      background-color: #8ccc26;
+    }
+    .slider-tags{
+      display: table;
+      width: 100%;
+      padding-left: 0;
+      line-height: 1;
+    }
+    .slider-tags li{
+      display: table-cell;
+      width: 33.3333333%;
+      text-align: right;
+      color: #999;
+      font-size: 12px;
+    }
+    .slider-drager{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 34px;
+      height: 30px;
+      margin: -11px 0 0 -17px;
+      background-color: #fff;
+      border: 1px solid #dbdad9;
+      text-align: center;
+      border-radius: 3px;
+      line-height: 28px;
+      box-shadow: 0px 0px 3px #e7e6e6;
+      cursor: pointer;
+    }
+    /* extra */
+    .extra-component{
+      margin-bottom: 10px; 
+      background:#fff;
+      border-radius: 5px;
+    }
+    .commponent-extra-price{
+      padding: 15px;
+    }
+    .commponent-extra-price h5, .commponent-extra-price h6{
+      margin-top: 0;
+    }
+    .commponent-extra-price h5{
+      margin-bottom: 15px;
+    }
+    .commponent-extra-price ul{
+      list-style: none;
+      padding-left: 0;
+    }
+    .commponent-extra-price ul li:not(:last-child){
+      margin-bottom: 10px;
+    }
+    .component-price{
+      min-height: 530px;
+      padding: 20px;
+    }
+    .component-price .no-padding{
+      padding: 0;
+    }
+    .component-price .no-padding-right{
+      padding-right: 0;
+    }
+    .component-price .form-group{
+      margin-bottom: 20px;
+    }
+    .component-price .num-ctrl{
+      margin: 5px 16px 0;
+      border: 1px solid #ccc;
+    }
+    .num-ctrl .form-control{
+      height:20px;
+      padding:0;
+      border-top: none;
+      border-bottom: none;
+      text-align:center;
+    }
+    .num-ctrl .input-group-btn:first-child>.btn, .input-group-btn:last-child>.btn{
+      border-top: none;
+      border-bottom: none;
+      border-left: none;
+      border-right: none;
+    }
+    .component-price .has-error .num-ctrl{
+      border: 1px solid #c83737;
+    }
+    .component-price .has-error .num-ctrl .form-control{
+      border: 1px solid #ccc;
+    }
+    .component-price .has-error{
+      position: relative;
+    }
+    .component-price .has-error .help-block{
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 12px;
+    }
+    .component-price .tab-form-group{
+      margin-bottom: 40px;
+    }
+    .radio-inline{
+      margin-left: 0;
+      margin-right: 6px;
+    }
+    .price-box{
+      margin-top: 7px;
+    }
+    .input-group-btn:first-child>.btn{
+      margin-right: 0;
+    }
+    .input-group-btn:last-child>.btn{
+      margin-left: 0;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="main">
+        <div class="main-component component-price">
+          <form class="form-horizontal">
+            <div class="form-group tab-form-group">
+              <label class="col-sm-2 control-label">类型</label>
+              <div class="col-sm-10">
+                <label class="radio-inline">
+                  <input type="radio" name="type" value="normal" checked="checked"> 标准
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="type" value="ecommerce"> 电商
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="type" value="finance"> 金融
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">High</label>
+              <div class="col-sm-6 no-padding-right">
+                <div class="slider j-high-slider">
+                  <div class="slider-bar-bg"></div>
+                  <div class="slider-bar high" data-slider="bar"></div>
+                  <ul class="slider-tags">
+                    <li><span class="pull-left">0</span>5</li>
+                    <li>10</li>
+                    <li>20</li>
+                  </ul>
+                  <div class="slider-drager j-high-drager" data-slider="drager">1</div>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="input-group j-num-ctrl num-ctrl">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-xs j-high-del" type="button" disabled="disabled">-</button>
+                  </span>
+                  <input type="text" class="form-control j-high-input" value="0" data-number="2">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-xs j-high-add" type="button">+</button>
+                  </span>
+                </div>
+                <p class="help-block"></p>
+              </div>
+              <div class="col-sm-2 no-padding gray-darter">
+                <p class="price-box">
+                  <span class="j-high-price">3000</span>元/个
+                </p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Middle</label>
+              <div class="col-sm-6 no-padding-right">
+                <div class="slider j-middle-slider">
+                  <div class="slider-bar-bg"></div>
+                  <div class="slider-bar middle" data-slider="bar"></div>
+                  <ul class="slider-tags">
+                    <li><span class="pull-left">0</span>10</li>
+                    <li>20</li>
+                    <li>40</li>
+                  </ul>
+                  <div class="slider-drager j-middle-drager" data-slider="drager">1</div>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="input-group j-num-ctrl num-ctrl">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-xs j-middle-del" type="button" disabled="disabled">-</button>
+                  </span>
+                  <input type="text" class="form-control j-middle-input" value="0" data-number="2">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-xs j-middle-add" type="button">+</button>
+                  </span>
+                </div>
+                <p class="help-block"></p>
+              </div>
+              <div class="col-sm-2 no-padding gray-darter">
+                <p class="price-box">
+                  <span class="j-middle-price">1500</span>元/个
+                </p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Low</label>
+              <div class="col-sm-6 no-padding-right">
+                <div class="slider j-low-slider">
+                  <div class="slider-bar-bg"></div>
+                  <div class="slider-bar low" data-slider="bar"></div>
+                  <ul class="slider-tags">
+                    <li><span class="pull-left">0</span>20</li>
+                    <li>40</li>
+                    <li>80</li>
+                  </ul>
+                  <div class="slider-drager j-low-drager" data-slider="drager">1</div>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="input-group j-num-ctrl num-ctrl">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-xs j-low-del" type="button" disabled="disabled">-</button>
+                  </span>
+                  <input type="text" class="form-control j-low-input" value="0" data-number="2">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-xs j-low-add" type="button">+</button>
+                  </span>
+                </div>
+                <p class="help-block"></p>
+              </div>
+              <div class="col-sm-2 no-padding  gray-darter">
+                <p class="price-box">
+                  <span class="j-low-price">100</span>元/个
+                </p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- /.main-->
+      <div class="extra">
+        <div class="extra-component commponent-extra-price">
+          <h5>费用计算器</h5>
+          <ul>
+            <li>
+              <span class="gray">类型：</span><span class="j-type">标准</span>
+            </li>
+            <li>
+              <span class="gray">High：</span><span class="j-high-number">0</span>个
+            </li>
+            <li>
+              <span class="gray">Middle：</span><span class="j-middle-number">0</span>个
+            </li>
+            <li>
+              <span class="gray">Low：</span><span class="j-low-number">0</span>个
+            </li>
+          </ul>
+          <hr />
+          <h6>费用预算：</h6>
+          <p class="orange"><span class="font-24 j-totalmoney">0 元</span></p>
+        </div>
+      </div><!-- /.extra-->
+    </div><!-- /.container -->
+    <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="jquery.madslider.js"></script>
+    <script>
+      $(function(){
+        var highObj = {
+          normal: 3000,
+          ecommerce: 5000,
+          finance: 10000,
+          range: [0, 20],
+        }
+        var middleObj = {
+          normal: 1500,
+          ecommerce: 2000,
+          finance: 5000,
+          range: [0, 40],
+        }
+        var lowObj = {
+          normal: 100,
+          ecommerce: 200,
+          finance: 200,
+          range: [0, 80],
+        }
+        var typeObj = {
+          normal: '标准',
+          ecommerce: '电商',
+          finance: '金融'
+        }
+        var paramsObj = {
+          highNumber: 0,
+          middleNumber: 0,
+          lowNumber: 0,
+          type: 'normal',
+          totalMoney: 0
+        }
+
+        var $highNumber       = $('.j-high-number')
+          , $middleNumber     = $('.j-middle-number')
+          , $lowNumber        = $('.j-low-number')
+          , $highPrice        = $('.j-high-price')
+          , $middlePrice      = $('.j-middle-price')
+          , $lowPrice         = $('.j-low-price')
+          , $highInput        = $('.j-high-input')
+          , $middleInput      = $('.j-middle-input')
+          , $lowInput         = $('.j-low-input')
+          , $highDrager       = $('.j-high-drager')
+          , $middleDrager     = $('.j-middle-drager')
+          , $lowDrager        = $('.j-low-drager')
+          , $totalMoney       = $('.j-totalmoney')
+          , $highSlider       = $('.j-high-slider')
+          , $middleSlider     = $('.j-middle-slider')
+          , $lowSlider        = $('.j-low-slider')
+          , $highAdd          = $('.j-high-add')
+          , $highDel          = $('.j-high-del')
+          , $middleAdd        = $('.j-middle-add')
+          , $middleDel        = $('.j-middle-del')
+          , $lowAdd           = $('.j-low-add')
+          , $lowDel           = $('.j-low-del')
+          , $type             = $('.j-type')
+          , $highSliderIns    = null
+          , $middleSliderIns  = null
+          , $lowSliderIns     = null
+          , highSliderWidth   = $highSlider.width()
+          , middleSliderWidth = $middleSlider.width()
+          , lowSliderWidth    = $lowSlider.width()
+          , robotTimer        = null
+          , RegAbsNum         = /^[0-9]*$/
+
+        function delayRobot(){
+          // Total Money
+          paramsObj.totalMoney = highObj[paramsObj.type] * paramsObj.highNumber + middleObj[paramsObj.type] * paramsObj.middleNumber + lowObj[paramsObj.type] * paramsObj.lowNumber
+          $totalMoney.text(paramsObj.totalMoney + ' 元')
+        }
+
+        function slideTo(){
+          // High Slider To
+          if(paramsObj.highNumber > 10){
+            var _highSlide = highSliderWidth/3*2 + highSliderWidth/3/10*(paramsObj.highNumber-10)
+          } else {
+            var _highSlide = highSliderWidth/3*2/10*(paramsObj.highNumber)
+          }
+          $highSliderIns.slideTo({x: _highSlide, speed: 500})
+          // Middle Slider To
+          if(paramsObj.middleNumber > 20){
+            var _middleSlide = middleSliderWidth/3*2 + middleSliderWidth/3/20*(paramsObj.middleNumber-20)
+          } else {
+            var _middleSlide = middleSliderWidth/3*2/20*(paramsObj.middleNumber)
+          }
+          $middleSliderIns.slideTo({x: _middleSlide, speed: 500})
+          // low Slider To
+          if(paramsObj.lowNumber > 40){
+            var _lowSlide = lowSliderWidth/3*2 + lowSliderWidth/3/40*(paramsObj.lowNumber-40)
+          } else {
+            var _lowSlide = lowSliderWidth/3*2/40*(paramsObj.lowNumber)
+          }
+          $lowSliderIns.slideTo({x: _lowSlide, speed: 500})
+        }
+
+        function robot(){
+          // Show Type
+          $type.text(typeObj[paramsObj.type])
+          // Show Price
+          $highPrice.text(highObj[paramsObj.type])
+          $middlePrice.text(middleObj[paramsObj.type])
+          $lowPrice.text(lowObj[paramsObj.type])
+          // Show Number
+          $highNumber.text(paramsObj.highNumber)
+          $middleNumber.text(paramsObj.middleNumber)
+          $lowNumber.text(paramsObj.lowNumber)
+          // Show Input Number
+          $highInput.val(paramsObj.highNumber)
+          $middleInput.val(paramsObj.middleNumber)
+          $lowInput.val(paramsObj.lowNumber)
+          // Show Drager Number
+          $highDrager.text(paramsObj.highNumber)
+          $middleDrager.text(paramsObj.middleNumber)
+          $lowDrager.text(paramsObj.lowNumber)
+          // Btn Disabled
+          if(paramsObj.highNumber <= highObj.range[0]){
+            $highDel.attr('disabled', true)
+          } else {
+            $highDel.attr('disabled',false)
+          }
+          if(paramsObj.highNumber >= highObj.range[1]){
+            $highAdd.attr('disabled', true)
+          } else {
+            $highAdd.attr('disabled',false)
+          }
+          if(paramsObj.middleNumber <= middleObj.range[0]){
+            $middleDel.attr('disabled', true)
+          } else {
+            $middleDel.attr('disabled',false)
+          }
+          if(paramsObj.middleNumber >= middleObj.range[1]){
+            $middleAdd.attr('disabled', true)
+          } else {
+            $middleAdd.attr('disabled',false)
+          }
+          if(paramsObj.lowNumber <= lowObj.range[0]){
+            $lowDel.attr('disabled', true)
+          } else {
+            $lowDel.attr('disabled',false)
+          }
+          if(paramsObj.lowNumber >= lowObj.range[1]){
+            $lowAdd.attr('disabled', true)
+          } else {
+            $lowAdd.attr('disabled',false)
+          }
+          // Remove Error
+          $highInput.parents('.col-sm-2').removeClass('has-error').find('.help-block').text('')
+          $middleInput.parents('.col-sm-2').removeClass('has-error').find('.help-block').text('')
+          $lowInput.parents('.col-sm-2').removeClass('has-error').find('.help-block').text('')
+          // Total Money
+          $totalMoney.text('卖命计算中~')
+          if(robotTimer){
+            clearTimeout(robotTimer)
+          }
+          robotTimer = setTimeout(delayRobot, 500)
+        }
+        // Input Control
+        $highAdd.on('click', function(){
+          paramsObj.highNumber++
+          slideTo()
+          robot()
+        })
+        $highDel.on('click', function(){
+          paramsObj.highNumber--
+          slideTo()
+          robot()
+        })
+        $middleAdd.on('click', function(){
+          paramsObj.middleNumber++
+          slideTo()
+          robot()
+        })
+        $middleDel.on('click', function(){
+          paramsObj.middleNumber--
+          slideTo()
+          robot()
+        })
+        $lowAdd.on('click', function(){
+          paramsObj.lowNumber++
+          slideTo()
+          robot()
+        })
+        $lowDel.on('click', function(){
+          paramsObj.lowNumber--
+          slideTo()
+          robot()
+        })
+        $highInput.on('keyup', function(){
+          var _highVal = $highInput.val()
+            , _$highParent = $highInput.parents('.col-sm-2')
+          if(!RegAbsNum.test(_highVal) || _highVal == '' || _highVal > highObj.range[1]){
+            _$highParent.addClass('has-error')
+            _$highParent.find('.help-block').text('请输入1-20的正整数')
+            return
+          } else {
+            _$highParent.removeClass('has-error')
+            _$highParent.find('.help-block').text('')
+          }
+          paramsObj.highNumber = $highInput.val()
+          slideTo()
+          robot()
+        })
+        $middleInput.on('keyup', function(){
+          var _val = $middleInput.val()
+            , _$parent = $middleInput.parents('.col-sm-2')
+          if(!RegAbsNum.test(_val) || _val == '' || _val > middleObj.range[1]){
+            _$parent.addClass('has-error')
+            _$parent.find('.help-block').text('请输入1-40的正整数')
+            return;
+          } else {
+            _$parent.removeClass('has-error')
+            _$parent.find('.help-block').text('')
+          }
+          paramsObj.middleNumber = _val
+          slideTo()
+          robot()
+        })
+        $lowInput.on('keyup', function(){
+          var _val = $lowInput.val()
+            , _$parent = $lowInput.parents('.col-sm-2')
+          if(!RegAbsNum.test(_val) || _val == '' || _val > lowObj.range[1]){
+            _$parent.addClass('has-error')
+            _$parent.find('.help-block').text('请输入1-80的正整数')
+            return;
+          } else {
+            _$parent.removeClass('has-error')
+            _$parent.find('.help-block').text('')
+          }
+          paramsObj.lowNumber = _val
+          slideTo()
+          robot()
+        })
+        // Select Type
+        $('[name="type"]').on('click', function(){
+          paramsObj.type = $('[name="type"]:checked').val()
+          robot()
+        })
+
+        // Use MadSlider
+        function highCallBack(number){
+          paramsObj.highNumber = number
+          robot()
+        }
+        $highSlider.madSlider({
+          formula: function(i,j){
+            var _number = 0
+            if(i > j/3*2){
+              _number = 10 + Math.ceil((i - j/3*2)/(j/3/10))
+            } else {
+              _number = Math.ceil(i/(j/3*2/10))
+            }
+            return _number > highObj.range[1] ? highObj.range[1] : _number
+          },
+          callBack: highCallBack
+        })
+        $highSliderIns = $highSlider.data('mad.slider')
+
+        function middleCallBack(number){
+          paramsObj.middleNumber = number
+          robot()
+        }
+        $middleSlider.madSlider({
+          formula: function(i,j){
+            var _number = 0
+            if(i > j/3*2){
+              _number = 20 + Math.ceil((i - j/3*2)/(j/3/20))
+            } else {
+              _number = Math.ceil(i/(j/3*2/20))
+            }
+            return _number > middleObj.range[1] ? middleObj.range[1] : _number
+          },
+          callBack: middleCallBack
+        })
+        $middleSliderIns = $middleSlider.data('mad.slider')
+
+        function lowCallBack(number){
+          paramsObj.lowNumber = number
+          robot()
+        }
+        $lowSlider.madSlider({
+          formula: function(i,j){
+            var _number = 0
+            if(i > j/3*2){
+              _number = 40 + Math.ceil((i - j/3*2)/(j/3/40))
+            } else {
+              _number = Math.ceil(i/(j/3*2/40))
+            }
+            return _number > lowObj.range[1] ? lowObj.range[1] : _number
+          },
+          callBack: lowCallBack
+        })
+        $lowSliderIns = $lowSlider.data('mad.slider')
+
+        // Start Robot
+        robot()
+      })
+    </script>
+  </body>
+</html>
