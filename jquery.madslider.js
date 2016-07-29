@@ -39,12 +39,9 @@
     })
 
     // 解除绑定拖动事件
-    that.$body.on('mouseup touchend', function(){
+    that.$body.on('mouseup mouseleave touchend', function(){
       that.isMove = false;
     });
-    that.$body.on('mouseleave touchend', function(){
-      that.isMove = false;
-    })
   }
   
   /* @name  sliderTo
