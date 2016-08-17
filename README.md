@@ -16,5 +16,5 @@
     
 ## Options
 
-    formula: 进度条返回值计算公式，i 当前数，j 总数；
-    callBack: 拖拽回调
+    formula: 进度条返回值计算公式，i 当前拖拽长度，j 总长度；
+    callBack: 拖拽回调，传入 formula 返回值
